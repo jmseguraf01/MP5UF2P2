@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class HashTable {
 //    private int SIZE = 16;
     static int SIZE = 16;
-    private static int SIZE2 = SIZE;
     private int ITEMS = 0;
     private HashEntry[] entries = new HashEntry[SIZE];
 
@@ -29,61 +28,61 @@ public class HashTable {
      * @param key La clau de l'element a afegir.
      * @param value El propi element que es vol afegir.
      */
-//    public void put(String key, String value) {
-        // TODO: Cambio el valor de entrada
-        public void put(String key, Object value) {
-        int hash = getHash(key, SIZE);
+    public void put(String key, String value) {
+        int hash = getHash(key);
         final HashEntry hashEntry = new HashEntry(key, value);
         // Si el array de entradas es nulo
         if(entries[hash] == null) {
             // Se guarda
             entries[hash] = hashEntry;
         }
-//        // La posicion del hash ya esta ocupada
-//        else {
-//            // Crea un array temporal con el valor de entries en la pos. hash
-//            HashEntry temp = entries[hash];
-//
-//            // Si tiene otro valor como .next
-//            while(temp.next != null) {
-//                temp = temp.next;
-//            }
-//
-//            if (!temp.key.equals(key)) {
-//                temp.next = hashEntry;
-//            } else {
-//                temp.value = value;
-//            }
-//            hashEntry.prev = temp;
-//        }
-        // TODO: Cuando ya existe colusion, se añade otra lista en esa posicion
+        // La posicion del hash ya esta ocupada
         else {
-            // 3.a
-            SIZE2 *= 2;
-            int hash2 = getHash(key, SIZE2);
-            HashEntry[] entries2 = new HashEntry[SIZE2];
+            // Crea un array temporal con el valor de entries en la pos. hash
+            HashEntry temp = entries[hash];
 
-            // 3.b Se guardan los nuevos datos - ME he quedado por aqui
-            HashEntry temp = new HashEntry(key, value);
-            entries2[hash2] = entries[hash];
-            entries2[hash2].next = temp;
+            // Si tiene otro valor como .next
+            while(temp.next != null) {
+                temp = temp.next;
+            }
 
-            entries = entries2;
-
+            if (!temp.key.equals(key)) {
+                temp.next = hashEntry;
+            } else {
+                temp.value = value;
+            }
+            hashEntry.prev = temp;
         }
         ITEMS++;
     }
 
+//    public void put(String key, String value) {
+//        int hash = getHash(key);
+//        final HashEntry hashEntry = new HashEntry(key, value);
+//        // Si el array de entradas es nulo
+//        if(entries[hash] == null) {
+//            // Se guarda
+//            entries[hash] = hashEntry;
+//        }
+//        // La posicion del hash ya esta ocupada
+//        else {
+//            // Crea un array temporal con el valor de entries en la pos. hash
+//            HashEntry temp = entries[hash];
+//            // Si tiene otro valor como .next
+//           while(temp.next != null)
+//               temp = temp.next;
+//            temp.next = hashEntry;
+//            hashEntry.prev = temp;
+//        }
+//    }
 
     /**
      * Permet recuperar un element dins la taula.
      * @param key La clau de l'element a trobar.
      * @return El propi element que es busca (null si no s'ha trobat).
      */
-//    public String get(String key) {
-    // TODO: Actualizo el valor de entrada
-    public Object get(String key) {
-        int hash = getHash(key, SIZE);
+    public String get(String key) {
+        int hash = getHash(key);
         try {
             if(entries[hash] != null) {
                 HashEntry temp = entries[hash];
@@ -99,18 +98,32 @@ public class HashTable {
         return null;
     }
 
+    // TODO: Extraccion de metodo
     private HashEntry getHashEntry(String key, HashEntry temp) {
         while( !temp.key.equals(key))
             temp = temp.next;
         return temp;
     }
+//    public String get(String key) {
+//        int hash = getHash(key);
+//        if(entries[hash] != null) {
+//            HashEntry temp = entries[hash];
+//
+//            while( !temp.key.equals(key))
+//                temp = temp.next;
+//
+//            return temp.value;
+//        }
+//
+//        return null;
+//    }
 
     /**
      * Permet esborrar un element dins de la taula.
      * @param key La clau de l'element a trobar.
      */
     public void drop(String key) {
-        int hash = getHash(key, SIZE);
+        int hash = getHash(key);
         if(entries[hash] != null) {
 
             HashEntry temp = entries[hash];
@@ -129,11 +142,26 @@ public class HashTable {
         }
     }
 
-//    private int getHash(String key) {
-    private int getHash(String key, int size) {
+//    public void drop(String key) {
+//        int hash = getHash(key);
+//        if(entries[hash] != null) {
+//
+//            HashEntry temp = entries[hash];
+//            while( !temp.key.equals(key))
+//                temp = temp.next;
+//
+////            if(temp.prev == null) entries[hash] = null;             //esborrar element únic (no col·lissió)
+//            else{
+//                if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
+//                temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+//            }
+//        }
+//    }
+
+    private int getHash(String key) {
         // piggy backing on java string
         // hashcode implementation.
-        return key.hashCode() % size;
+        return key.hashCode() % SIZE;
     }
 
 
@@ -199,7 +227,7 @@ public class HashTable {
         ArrayList<String> foundKeys = new ArrayList();
 
         newKey.add(0);
-        int collision = getHash(key, SIZE);
+        int collision = getHash(key);
         int current = newKey.size() -1;
 
         while (foundKeys.size() < quantity){
@@ -208,7 +236,7 @@ public class HashTable {
             for(int i = 0; i < newKey.size(); i++)
                 currentKey += alphabet[newKey.get(i)];
 
-            if(!currentKey.equals(key) && getHash(currentKey, SIZE) == collision)
+            if(!currentKey.equals(key) && getHash(currentKey) == collision)
                 foundKeys.add(currentKey);
 
             //increasing the current alphabet key

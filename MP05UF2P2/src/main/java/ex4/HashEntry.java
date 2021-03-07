@@ -1,16 +1,14 @@
 package ex4;
 
-
 public class HashEntry {
     String key;
-    Object value;
+    String value;
 
     // Linked list of same hash entries.
     HashEntry next;
     HashEntry prev;
-    
 
-    public HashEntry(String key, Object value) {
+    public HashEntry(String key, String value) {
         this.key = key;
         this.value = value;
         this.next = null;
@@ -22,24 +20,3 @@ public class HashEntry {
         return "[" + key + ", " + value + "]";
     }
 }
-
-//public class HashEntry {
-//    String key;
-//    String value;
-//
-//    // Linked list of same hash entries.
-//    HashEntry next;
-//    HashEntry prev;
-//
-//    public HashEntry(String key, String value) {
-//        this.key = key;
-//        this.value = value;
-//        this.next = null;
-//        this.prev = null;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "[" + key + ", " + value + "]";
-//    }
-//}
