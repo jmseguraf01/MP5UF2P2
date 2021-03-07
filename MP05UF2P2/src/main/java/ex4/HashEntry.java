@@ -8,6 +8,7 @@ public class HashEntry {
     // Linked list of same hash entries.
     HashEntry next;
     HashEntry prev;
+    
 
     public HashEntry(String key, Object value) {
         this.key = key;
