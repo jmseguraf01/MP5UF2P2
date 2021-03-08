@@ -21,4 +21,4 @@ jobs:
       with:
         java-version: 15
     - name: Build with Maven
-      run: mvn -B ex1 --file pom.xml
+      run: mvn -B ex1 --file MP05UF2P2/pom.xml
