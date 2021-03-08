@@ -10,9 +10,7 @@ import java.util.ArrayList;
  * Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
  */
 public class HashTable {
-//    private int SIZE = 16;
-    static int SIZE = 16;
-    private static int SIZE2 = SIZE;
+    private int SIZE = 16;
     private int ITEMS = 0;
     private HashEntry[] entries = new HashEntry[SIZE];
 
@@ -39,6 +37,32 @@ public class HashTable {
             // Se guarda
             entries[hash] = hashEntry;
         }
+        // TODO: Si es la misma clave, se sustituye el valor
+        else if (entries[hash].key.equals(key)) {
+            entries[hash].value = value;
+        }
+        // TODO: Cuando existe una colision
+        else {
+            SIZE *= 2;
+            // Creo la nueva lista
+            HashEntry[] newEntries = new HashEntry[SIZE];
+            // Meto cada dato de la lista anterior en este
+            for (HashEntry temp : entries) {
+                // Siempre que haya un dato
+                if (temp != null) {
+                    // Obtengo el hash
+                    int hash2 = getHash(temp.key, SIZE);
+                    // Siempre que esa posicion no este ocupada
+                    if (newEntries[hash2] == null) {
+                        newEntries[hash2] = temp;
+                    } else {
+                        put(temp.key, temp.value);
+                    }
+                }
+            }
+            entries = newEntries;
+        }
+        ITEMS++;
 //        // La posicion del hash ya esta ocupada
 //        else {
 //            // Crea un array temporal con el valor de entries en la pos. hash
@@ -56,23 +80,7 @@ public class HashTable {
 //            }
 //            hashEntry.prev = temp;
 //        }
-        // TODO: Cuando ya existe colusion, se añade otra lista en esa posicion
-        else {
-            // 3.a
-            SIZE2 *= 2;
-            int hash2 = getHash(key, SIZE2);
-            HashEntry[] entries2 = new HashEntry[SIZE2];
-
-            // 3.b Se guardan los nuevos datos - ME he quedado por aqui
-            HashEntry temp = new HashEntry(key, value);
-            entries2[hash2] = entries[hash];
-            entries2[hash2].next = temp;
-
-            entries = entries2;
-
         }
-        ITEMS++;
-    }
 
 
     /**
@@ -87,8 +95,6 @@ public class HashTable {
         try {
             if(entries[hash] != null) {
                 HashEntry temp = entries[hash];
-                temp = getHashEntry(key, temp);
-
                 return temp.value;
             }
         }
@@ -99,12 +105,6 @@ public class HashTable {
         return null;
     }
 
-    private HashEntry getHashEntry(String key, HashEntry temp) {
-        while( !temp.key.equals(key))
-            temp = temp.next;
-        return temp;
-    }
-
     /**
      * Permet esborrar un element dins de la taula.
      * @param key La clau de l'element a trobar.
@@ -112,19 +112,7 @@ public class HashTable {
     public void drop(String key) {
         int hash = getHash(key, SIZE);
         if(entries[hash] != null) {
-
-            HashEntry temp = entries[hash];
-            temp = getHashEntry(key, temp);
-
-            if(temp.prev == null) {
-                if (temp.next != null)
-                    temp.next.prev = null;
-                entries[hash] = temp.next;
-            }
-            else {
-                if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
-                temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
-            }
+            entries[hash] = null;
             ITEMS--;
         }
     }
