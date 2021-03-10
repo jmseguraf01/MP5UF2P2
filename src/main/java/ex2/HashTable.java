@@ -10,7 +10,11 @@ import java.util.ArrayList;
  * Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
  */
 public class HashTable {
+<<<<<<< HEAD:src/main/java/ex2/HashTable.java
     private int SIZE = 16;
+=======
+    static int SIZE = 16;
+>>>>>>> bcc46816bf06f94330bd25a86361a31a97b2bbdd:MP05UF2P2/src/main/java/ex2/HashTable.java
     private int ITEMS = 0;
     private HashEntry[] entries = new HashEntry[SIZE];
 

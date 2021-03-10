@@ -1,6 +1,5 @@
-package ex2;
+package ex3;
 
-import ex2.HashTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -9,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class HashTableTest {
 
     @ParameterizedTest
-    @CsvSource({"20","30","40","500"})
+    @CsvSource({"10","15","20","25"})
     void count(int inserts) {
         // Inserto datos y compruebo el total de items insertados
         HashTable hashTable = new HashTable();
@@ -21,17 +20,8 @@ class HashTableTest {
 
     @org.junit.jupiter.api.Test
     void size() {
-        HashTable hashTable = new HashTable();
-<<<<<<< HEAD:src/main/java/ex2/HashTableTest.java
+        ex1.HashTable hashTable = new ex1.HashTable();
         Assertions.assertEquals(hashTable.size(), hashTable.size());
-=======
-        // Inserto datos
-        for (String key : hashTable.getCollisionsForKey("0", 5)) {
-            hashTable.put(key, "value");
-        }
-        // Compruebo que el valor size no cambia
-        Assertions.assertEquals(HashTable.SIZE, hashTable.size());
->>>>>>> bcc46816bf06f94330bd25a86361a31a97b2bbdd:MP05UF2P2/src/main/java/ex2/HashTableTest.java
     }
 
     @ParameterizedTest
@@ -41,8 +31,6 @@ class HashTableTest {
         // Compruebo la inserccion en las colisiones
         for (String key2 : hashTable.getCollisionsForKey(key, 5)) {
             hashTable.put(key2, value);
-        }
-        for (String key2 : hashTable.getCollisionsForKey(key, 5)) {
             Assertions.assertEquals(value, hashTable.get(key2));
         }
         // Compruebo que se sustituyen los datos cuando la key es la misma
@@ -55,20 +43,16 @@ class HashTableTest {
         Assertions.assertEquals(nuevoValor, hashTable.get("31"));
     }
 
-    @ParameterizedTest
-    @CsvSource({"a,1", "b,2", "c,2"})
-    void get(String value, String key) {
+    @org.junit.jupiter.api.Test
+    void get() {
+        String value = "a";
+        String key = "1";
         HashTable hashTable = new HashTable();
-        // Inserto y obtengo
-        for (String key2 : hashTable.getCollisionsForKey(key, 5)) {
-            hashTable.put(key2, value);
-            Assertions.assertEquals(value, hashTable.get(key2));
-        }
-        // Elimino y obtengo
-        for (String key2 : hashTable.getCollisionsForKey(key, 5)) {
-            hashTable.drop(key2);
-            Assertions.assertEquals(null, hashTable.get(key2));
-        }
+        hashTable.put(key, value);
+        // Valor existente
+        Assertions.assertEquals(value, hashTable.get(key));
+        // Un valor que no existe
+        Assertions.assertEquals(null, hashTable.get("5"));
     }
 
     @ParameterizedTest
@@ -79,7 +63,6 @@ class HashTableTest {
         for (String key2 : hashTable.getCollisionsForKey(key, 5)) {
             hashTable.put(key2, value);
             hashTable.drop(key2);
-            // Compruebo que se hayan eliminado
             Assertions.assertEquals(null, hashTable.get(key2));
         }
     }

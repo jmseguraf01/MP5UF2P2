@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class HashTableTest {
 
     @ParameterizedTest
-    @CsvSource({"20","30","40","500"})
+    @CsvSource({"10","15","20","25"})
     void count(int inserts) {
         // Inserto datos y compruebo el total de items insertados
         HashTable hashTable = new HashTable();
@@ -20,7 +20,11 @@ class HashTableTest {
 
     @org.junit.jupiter.api.Test
     void size() {
+<<<<<<< HEAD:src/main/java/ex4/HashTableTest.java
         HashTable hashTable = new HashTable();
+=======
+        ex1.HashTable hashTable = new ex1.HashTable();
+>>>>>>> bcc46816bf06f94330bd25a86361a31a97b2bbdd:MP05UF2P2/src/main/java/ex4/HashTableTest.java
         Assertions.assertEquals(hashTable.size(), hashTable.size());
     }
 
